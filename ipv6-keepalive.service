@@ -1,0 +1,9 @@
+[Unit]
+Description=IPv6 Keepalive
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /Disk/Local/NetworkKeepLive/IPV6.sh
+WorkingDirectory=/Disk/Local/NetworkKeepLive
