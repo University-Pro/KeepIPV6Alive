@@ -23,18 +23,18 @@ rotate_log() {
 
 rotate_log
 
+if curl -6 --interface "$INTERFACE" \
+        --connect-timeout 10 \
+        --max-time 15 \
+        --silent --output /dev/null \
+        "$TARGET_CURL"; then
+    log "[OK] curl via $INTERFACE -> $TARGET_CURL success"
+else
+    log "[FAIL] curl via $INTERFACE -> $TARGET_CURL failed"
+fi
+
 if ping -6 -I "$INTERFACE" -c "$PING_COUNT" -W 5 "$TARGET_PING" &>/dev/null; then
     log "[OK] ping6 via $INTERFACE -> $TARGET_PING success"
 else
-    log "[FAIL] ping6 via $INTERFACE -> $TARGET_PING failed, trying curl..."
-
-    if curl -6 --interface "$INTERFACE" \
-            --connect-timeout 10 \
-            --max-time 15 \
-            --silent --output /dev/null \
-            "https://ipv6.ustc.edu.cn"; then
-        log "[OK] curl fallback via $INTERFACE -> $TARGET_CURL success"
-    else
-        log "[FAIL] Both ping6 and curl failed on $INTERFACE"
-    fi
+    log "[FAIL] ping6 via $INTERFACE -> $TARGET_PING failed"
 fi
